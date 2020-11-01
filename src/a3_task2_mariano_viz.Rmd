@@ -55,9 +55,15 @@ Make sure to `View()` the resulting data frame (remember: run `View()` in the Co
 
 **Note: You should get a warning about one piece dropped. What happens to the name in Row 49, which contains two dashes?
 
+The name *Ki-Adi-Mundi* was separated taking into account the fist dash as *Ki* (name_1) and *Adi* (name_2). The last part (*Mundi*) was dropped.
+
 ```{r}
 # Your code here: 
 
+sw_split_name <- starwars %>% 
+  separate(col = name,
+           into = c("name_1", "name_2"),
+           sep = "-")
 
 ```
 
@@ -92,6 +98,12 @@ Make sure to `View()` the resulting data frame (remember: run `View()` in the Co
 ```{r}
 # Your code here:
 
+sw_skin_sep <- starwars %>% 
+  separate(col = skin_color,
+           into = c("skin_1", "skin_2"),
+           sep = ",",
+           extra = "merge",
+           remove = FALSE)
 
 ```
 
@@ -128,6 +140,11 @@ In the code chunk below, starting from the `mpg` data create a new data frame ca
 ```{r}
 # Your code here: 
 
+mpg_model_class <- mpg %>% 
+  unite(col = model_class,
+        c(model, class),
+        sep = "-",
+        remove = FALSE)
 
 ```
 
@@ -158,6 +175,11 @@ In the code chunk below, use `ymd()` to convert a date that you choose in `YYYY-
 ```{r}
 # Your code here: 
 
+ymd("1988-06-02")
+
+ymd("1988/06/02")
+
+ymd(19880602)
 
 ```
 
@@ -183,6 +205,11 @@ In the code chunk below, create a vector (using `c()`, as above) stored as `some
 ```{r}
 # Your code here: 
 
+some_dates <- c(11061972, 02142007,01301843)
+
+some_dates_converted <- mdy(some_dates)
+
+class(some_dates_converted)
 
 ```
 
@@ -227,6 +254,13 @@ Starting from the `lakers` dataset, create a new dataset called `gasol_hookshots
 ```{r}
 # Your code here: 
 
+gasol_hookshot <- lakers %>% 
+  filter(player == "Pau Gasol", type == "hook") %>% 
+  mutate(date_new = ymd(date)) %>% 
+  mutate(month = month(date_new))%>% 
+  count(month)  
+
+gasol_hookshot
 
 ```
 
@@ -277,6 +311,10 @@ Note: If you add another condition within `case_when()` that is `TRUE ~ "some th
 ```{r}
 # Your code here: 
 
+storm_danger <- storms %>% 
+  mutate(danger = case_when(status == "hurricane" ~ "high",
+                            TRUE ~ "moderate")) #ALSO WORKED: status != "hurricane" ~ "moderate" 
+  
 
 ```
 
